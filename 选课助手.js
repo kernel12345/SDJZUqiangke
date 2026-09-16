@@ -547,7 +547,7 @@
             <button class="xk-btn" id="xk-clearsel" style="background:#6c757d;color:#fff;">清空</button>
             <label style="font-size:12px; display:flex; align-items:center; cursor:pointer;">
               <input type="checkbox" id="xk-onlyonline" checked style="margin-right:3px;">
-              只显示在线课程（有剩余容量）
+              只显示在线课程
             </label>
           </div>
         </div>
@@ -646,7 +646,7 @@
     // ① 搜索关键词过滤（课程号/课程名/教师）
     const qName = ($('#xk-q-name')?.value || '').trim().toLowerCase();
     const qTeacher = ($('#xk-q-teacher')?.value || '').trim().toLowerCase();
-    // ② 只显示在线课程（剩余容量 > 0）
+    // ② 只显示在线课程（课程名包含"在线"）
     const onlyOnline = $('#xk-onlyonline')?.checked ?? false;
 
     let filtered = STATE.courses.filter((c) => {
@@ -660,8 +660,7 @@
         if (!(c.skls || '').toLowerCase().includes(qTeacher)) return false;
       }
       if (onlyOnline) {
-        const syrs = parseInt(c.syrsText, 10);
-        if (!isNaN(syrs) && syrs <= 0) return false;
+        if ((c.kcmc || '').indexOf('在线') < 0) return false;
       }
       return true;
     });
