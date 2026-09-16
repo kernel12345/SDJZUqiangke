@@ -20,28 +20,14 @@
 
 ### 步骤 2：安装脚本
 
-**方式 A：脚本猫平台一键安装（脚本猫用户推荐）**
+**方式 A：脚本猫平台一键安装（推荐）**
 
 已上传至脚本猫平台，打开链接直接安装：
 ```
 https://scriptcat.org/zh-CN/script-show-page/8001
 ```
 
-**方式 B：URL 导入（油猴 / 脚本猫通用）**
-
-在脚本管理器设置 → 实用工具 → URL 导入，粘贴：
-```
-https://raw.githubusercontent.com/kernel12345/SDJZUqiangke/main/选课助手.js
-```
-
-**方式 C：手动粘贴**
-
-1. 点工具栏 🐒/🐱 图标 → **添加新脚本…**
-2. 打开 [选课助手.js](选课助手.js)，全部复制
-3. 粘贴到编辑器，Ctrl+S 保存
-4. 左侧"已安装脚本"里应该能看到"SDJZU 教务系统选课助手"
-
-> 脚本猫用户注意：脚本猫的 API（`GM_xmlhttpRequest`、`GM_notification` 等）与油猴完全兼容，脚本无需任何修改即可直接运行。
+> 脚本猫的 API（`GM_xmlhttpRequest`、`GM_notification` 等）与油猴完全兼容，脚本无需任何修改即可直接运行。
 
 ### 步骤 3：验证生效
 
