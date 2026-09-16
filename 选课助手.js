@@ -549,6 +549,10 @@
               <input type="checkbox" id="xk-onlyonline" checked style="margin-right:3px;">
               只显示在线课程
             </label>
+            <label style="font-size:12px; display:flex; align-items:center; cursor:pointer;">
+              <input type="checkbox" id="xk-onlyhas" style="margin-right:3px;">
+              只显示有容量
+            </label>
           </div>
         </div>
 
@@ -615,6 +619,8 @@
     $('#xk-q-teacher').addEventListener('input', () => { updateCourseList(); });
     // ② 只显示在线课程切换
     $('#xk-onlyonline').addEventListener('change', () => { updateCourseList(); });
+    // ② 只显示有容量的课程切换
+    $('#xk-onlyhas').addEventListener('change', () => { updateCourseList(); });
     $('#xk-checkall').addEventListener('click', () => {
       STATE.courses.forEach((c) => STATE.targets.add(c.id));
       updateCourseList();
@@ -648,6 +654,8 @@
     const qTeacher = ($('#xk-q-teacher')?.value || '').trim().toLowerCase();
     // ② 只显示在线课程（课程名包含"在线"）
     const onlyOnline = $('#xk-onlyonline')?.checked ?? false;
+    // ② 只显示有容量的课程（剩余容量 > 0）
+    const onlyHas = $('#xk-onlyhas')?.checked ?? false;
 
     let filtered = STATE.courses.filter((c) => {
       if (qName) {
@@ -661,6 +669,10 @@
       }
       if (onlyOnline) {
         if ((c.kcmc || '').indexOf('在线') < 0) return false;
+      }
+      if (onlyHas) {
+        const syrs = parseInt(c.syrsText, 10);
+        if (!isNaN(syrs) && syrs <= 0) return false;
       }
       return true;
     });
