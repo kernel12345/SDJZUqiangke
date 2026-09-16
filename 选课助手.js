@@ -517,7 +517,7 @@
         #sdjzu-xk-helper .xk-log { height:180px; overflow:auto; background:#1e1e1e; color:#ccc; padding:6px; border-radius:4px; font-family:Consolas,monospace; }
         #sdjzu-xk-helper .xk-status { font-size:11px; color:#666; margin:4px 0; }
         #sdjzu-xk-helper .xk-collapse { font-size:11px; color:#fff; opacity:.85; cursor:pointer; }
-        #sdjzu-xk-helper .xk-collapsed .xk-body { display:none; }
+        #sdjzu-xk-helper.xk-collapsed .xk-body { display:none; }
         #sdjzu-xk-helper .xk-small { font-size:11px; color:#888; }
         #sdjzu-xk-helper .xk-row { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
         #sdjzu-xk-helper .xk-row > * { flex:1; }
@@ -611,7 +611,11 @@
     });
     document.addEventListener('mouseup', () => { dragging = false; });
 
-    $('#xk-collapse').addEventListener('click', () => panel.classList.toggle('xk-collapsed'));
+    $('#xk-collapse').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const collapsed = panel.classList.toggle('xk-collapsed');
+      $('#xk-collapse').textContent = collapsed ? '展开' : '收起';
+    });
     $('#xk-refresh').addEventListener('click', () => { scanDOM(); });
     $('#xk-search').addEventListener('click', () => { searchFromQuery(); });
     // ① 实时过滤：输入一个字就过滤 ② 的课程列表
