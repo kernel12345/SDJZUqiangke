@@ -22,7 +22,10 @@
 
 **方式 A：脚本猫平台一键安装（推荐）**
 
-已上传至脚本猫平台，打开链接直接安装：
+已上传至脚本猫平台，点击下方链接直接安装：
+
+### 👉 [【点击安装】山东建筑大学选课助手](https://scriptcat.org/zh-CN/script-show-page/8001)
+
 ```
 https://scriptcat.org/zh-CN/script-show-page/8001
 ```
