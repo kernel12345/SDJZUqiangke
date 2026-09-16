@@ -538,7 +538,7 @@ function http(opts) {
 
 ## 六、安装指南
 
-### 步骤 1：安装 Tampermonkey
+### 步骤 1：安装 Tampermonkey或者脚本猫
 
 | 浏览器 | 扩展商店链接 |
 |--------|-------------|
