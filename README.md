@@ -542,23 +542,30 @@ function http(opts) {
 
 本脚本兼容 **油猴（Tampermonkey）** 和 **脚本猫（ScriptCat）**，二选一安装即可。
 
-| 扩展 | Chrome / Edge | Firefox | 官网 |
-|------|--------------|---------|------|
-| 油猴 Tampermonkey | [Chrome 应用商店](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) | [Firefox 附加组件](https://addons.mozilla.org/firefox/addon/tampermonkey/) | https://www.tampermonkey.net/ |
-| 脚本猫 ScriptCat | [Chrome 应用商店](https://chromewebstore.google.com/detail/scriptcat/ndibnaafbcjoppljlgjpgnmijokdcmma) | [Firefox 附加组件](https://addons.mozilla.org/firefox/addon/scriptcat/) | https://docs.scriptcat.org/ |
+| 扩展 | Chrome 应用商店 | Edge 加载项 | Firefox 附加组件 | 官网 |
+|------|----------------|------------|-----------------|------|
+| 油猴 Tampermonkey | [链接](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) | [链接](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd) | [链接](https://addons.mozilla.org/firefox/addon/tampermonkey/) | https://www.tampermonkey.net/ |
+| 脚本猫 ScriptCat | [链接](https://chromewebstore.google.com/detail/scriptcat/ndibnaafbcjoppljlgjpgnmijokdcmma) | [链接](https://microsoftedge.microsoft.com/addons/detail/脚本猫/liilgpjgabokdklappibcjfablkpcekh) | [链接](https://addons.mozilla.org/firefox/addon/scriptcat/) | https://docs.scriptcat.org/ |
 
 安装后工具栏会出现 🐒（油猴）或 🐱（脚本猫）图标。
 
 ### 步骤 2：安装脚本
 
-**方式 A：一键安装（推荐）**
+**方式 A：脚本猫平台一键安装（脚本猫用户推荐）**
+
+已上传至脚本猫平台，打开链接直接安装：
+```
+https://scriptcat.org/zh-CN/script-show-page/8001
+```
+
+**方式 B：URL 导入（油猴 / 脚本猫通用）**
 
 在脚本管理器设置 → 实用工具 → URL 导入，粘贴：
 ```
 https://raw.githubusercontent.com/kernel12345/SDJZUqiangke/main/选课助手.js
 ```
 
-**方式 B：手动粘贴**
+**方式 C：手动粘贴**
 
 1. 点工具栏 🐒/🐱 图标 → **添加新脚本…**
 2. 打开 [选课助手.js](选课助手.js)，全部复制
