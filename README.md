@@ -14,7 +14,7 @@
 | 扩展 | Edge 加载项 |
 |------|------------|
 | 油猴 Tampermonkey | [链接](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd) |
-| 脚本猫 ScriptCat | [链接](https://microsoftedge.microsoft.com/addons/detail/脚本猫/liilgpjgabokdklappibcjfablkpcekh) |
+| 脚本猫 ScriptCat | [链接](https://docs.scriptcat.org/) |
 
 安装后工具栏会出现 🐒（油猴）或 🐱（脚本猫）图标。
 
