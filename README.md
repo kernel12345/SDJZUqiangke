@@ -1,4 +1,4 @@
-# 山建选课助手 · 油猴脚本（Tampermonkey Userscript）
+# 山建选课助手 · 脚本（Userscript）
 
 > 直接对接**山东建筑大学**教务系统（`xjwgl.sdjzu.edu.cn` / jsxsd 金智教务）选课接口的自动抢课脚本。
 > 只需输入课程编号（`GXGL9500`）、课程名或教师名，脚本自动调查询接口拿到内部 ID，循环调选课接口重试直到选上。
@@ -538,38 +538,7 @@ function http(opts) {
 
 ## 六、安装指南
 
-### 步骤 1：安装 Tampermonkey
-
-| 浏览器 | 扩展商店链接 |
-|--------|-------------|
-| Chrome / Edge | https://www.tampermonkey.net/ |
-| Firefox | https://addons.mozilla.org/firefox/addon/tampermonkey/ |
-
-安装后工具栏会出现 🐒 图标。
-
-### 步骤 2：安装脚本
-
-**方式 A：一键安装（推荐）**
-
-在 Tampermonkey 设置 → 实用工具 → URL 导入，粘贴：
-```
-https://raw.githubusercontent.com/kernel12345/-/main/选课助手.user.js
-```
-
-**方式 B：手动粘贴**
-
-1. 点工具栏 🐒 图标 → **添加新脚本…**
-2. 打开 [选课助手.user.js](选课助手.user.js)，全部复制
-3. 粘贴到编辑器，Ctrl+S 保存
-4. 左侧"已安装脚本"里应该能看到"SDJZU 教务系统选课助手"
-
-### 步骤 3：验证生效
-
-1. 打开 `https://xjwgl.sdjzu.edu.cn/jsxsd/` 并登录
-2. 进入选课中心，点"公选课选课"
-3. 页面右上角出现"🚀 山建选课助手 v2.1"面板 = 成功
-
----
+| 浏览器 | 扩展商店安装油猴，或者脚本猫，导入选课助手.js
 
 ## 七、使用指南
 
