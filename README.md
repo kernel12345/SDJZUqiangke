@@ -11,10 +11,10 @@
 
 本脚本兼容 **油猴（Tampermonkey）** 和 **脚本猫（ScriptCat）**，二选一安装即可。
 
-| 扩展 | Edge 加载项 | Firefox 附加组件 |
-|------|------------|-----------------|
-| 油猴 Tampermonkey | [链接](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd) | [链接](https://addons.mozilla.org/firefox/addon/tampermonkey/) |
-| 脚本猫 ScriptCat | [链接](https://microsoftedge.microsoft.com/addons/detail/脚本猫/liilgpjgabokdklappibcjfablkpcekh) | [链接](https://addons.mozilla.org/firefox/addon/scriptcat/) |
+| 扩展 | Edge 加载项 |
+|------|------------|
+| 油猴 Tampermonkey | [链接](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd) |
+| 脚本猫 ScriptCat | [链接](https://microsoftedge.microsoft.com/addons/detail/脚本猫/liilgpjgabokdklappibcjfablkpcekh) |
 
 安装后工具栏会出现 🐒（油猴）或 🐱（脚本猫）图标。
 
