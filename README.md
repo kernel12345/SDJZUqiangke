@@ -553,13 +553,13 @@ function http(opts) {
 
 在 Tampermonkey 设置 → 实用工具 → URL 导入，粘贴：
 ```
-https://raw.githubusercontent.com/kernel12345/-/main/选课助手.user.js
+https://raw.githubusercontent.com/kernel12345/SDJZUqiangke/main/选课助手.js
 ```
 
 **方式 B：手动粘贴**
 
 1. 点工具栏 🐒 图标 → **添加新脚本…**
-2. 打开 [选课助手.user.js](选课助手.user.js)，全部复制
+2. 打开 [选课助手.js](选课助手.js)，全部复制
 3. 粘贴到编辑器，Ctrl+S 保存
 4. 左侧"已安装脚本"里应该能看到"SDJZU 教务系统选课助手"
 

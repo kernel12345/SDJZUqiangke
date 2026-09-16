@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SDJZU 教务系统选课助手
 // @namespace    https://xjwgl.sdjzu.edu.cn/
-// @version      2.1.0
+// @version      2.2.0
 // @description  直接对接山东建筑大学教务系统选课接口(已实地抓包)，自动抢课/捡漏，支持公选课/必修/限选/专业选课
 // @author       You
 // @match        https://xjwgl.sdjzu.edu.cn/jsxsd/*
@@ -530,9 +530,9 @@
         <div class="xk-status" id="xk-status">正在扫描页面…</div>
 
         <div class="xk-sec">
-          <h4>① 按条件搜索课程（可选，直接读取页面也行）</h4>
+          <h4>① 按条件搜索课程（输入即过滤下方列表，也可点搜索从接口拉取）</h4>
           <div class="xk-row">
-            <input type="text" id="xk-q-name" placeholder="课程名/课程号关键词" />
+            <input type="text" id="xk-q-name" placeholder="课程名/课程号/教师关键词" />
             <input type="text" id="xk-q-teacher" placeholder="教师" style="flex:0 0 80px;" />
             <button class="xk-btn xk-btn-search" id="xk-search" style="flex:0 0 auto;">搜索</button>
           </div>
@@ -541,17 +541,22 @@
         <div class="xk-sec">
           <h4>② 已识别课程（共 <span id="xk-count">0</span> 门，已勾选 <span id="xk-sel">0</span> 门）</h4>
           <div class="xk-courses" id="xk-courses"></div>
-          <div style="margin-top:4px;">
+          <div style="margin-top:4px; display:flex; flex-wrap:wrap; align-items:center; gap:6px;">
             <button class="xk-btn xk-btn-refresh" id="xk-refresh">🔄 读取页面课程</button>
             <button class="xk-btn" id="xk-checkall" style="background:#6c757d;color:#fff;">全选</button>
             <button class="xk-btn" id="xk-clearsel" style="background:#6c757d;color:#fff;">清空</button>
+            <label style="font-size:12px; display:flex; align-items:center; cursor:pointer;">
+              <input type="checkbox" id="xk-onlyonline" checked style="margin-right:3px;">
+              只显示在线课程（有剩余容量）
+            </label>
           </div>
         </div>
 
         <div class="xk-sec">
-          <h4>③ 输入课程编号/名称/教师，一键加入抢课目标</h4>
-          <textarea id="xk-manual" rows="2" placeholder="每行一个，例如:&#10;GXGL9500&#10;数据艺术&#10;李奇会"></textarea>
+          <h4>③ 输入课程编号，查接口匹配课程名/教师后加入目标</h4>
+          <textarea id="xk-manual" rows="2" placeholder="每行一个课程编号，例如:&#10;GXGL9500&#10;GXGL9497"></textarea>
           <button class="xk-btn" id="xk-addmanual" style="background:#fd7e14;color:#fff;width:100%;margin-top:4px;">🔎 查接口并加入目标</button>
+          <div id="xk-manual-result" style="margin-top:6px; font-size:12px; color:#555;"></div>
         </div>
 
         <div class="xk-sec">
@@ -605,6 +610,11 @@
     $('#xk-collapse').addEventListener('click', () => panel.classList.toggle('xk-collapsed'));
     $('#xk-refresh').addEventListener('click', () => { scanDOM(); });
     $('#xk-search').addEventListener('click', () => { searchFromQuery(); });
+    // ① 实时过滤：输入一个字就过滤 ② 的课程列表
+    $('#xk-q-name').addEventListener('input', () => { updateCourseList(); });
+    $('#xk-q-teacher').addEventListener('input', () => { updateCourseList(); });
+    // ② 只显示在线课程切换
+    $('#xk-onlyonline').addEventListener('change', () => { updateCourseList(); });
     $('#xk-checkall').addEventListener('click', () => {
       STATE.courses.forEach((c) => STATE.targets.add(c.id));
       updateCourseList();
@@ -632,7 +642,31 @@
   function updateCourseList() {
     if (!courseListEl) return;
     courseListEl.innerHTML = '';
-    STATE.courses.forEach((c) => {
+
+    // ① 搜索关键词过滤（课程号/课程名/教师）
+    const qName = ($('#xk-q-name')?.value || '').trim().toLowerCase();
+    const qTeacher = ($('#xk-q-teacher')?.value || '').trim().toLowerCase();
+    // ② 只显示在线课程（剩余容量 > 0）
+    const onlyOnline = $('#xk-onlyonline')?.checked ?? false;
+
+    let filtered = STATE.courses.filter((c) => {
+      if (qName) {
+        const hit = (c.kch || '').toLowerCase().includes(qName) ||
+                    (c.kcmc || '').toLowerCase().includes(qName) ||
+                    (c.skls || '').toLowerCase().includes(qName);
+        if (!hit) return false;
+      }
+      if (qTeacher) {
+        if (!(c.skls || '').toLowerCase().includes(qTeacher)) return false;
+      }
+      if (onlyOnline) {
+        const syrs = parseInt(c.syrsText, 10);
+        if (!isNaN(syrs) && syrs <= 0) return false;
+      }
+      return true;
+    });
+
+    filtered.forEach((c) => {
       const div = document.createElement('div');
       div.className = 'xk-item' + (STATE.targets.has(c.id) ? ' sel' : '');
       const checked = STATE.targets.has(c.id) ? 'checked' : '';
@@ -652,12 +686,16 @@
       });
       courseListEl.appendChild(div);
     });
+
     if (countEl) countEl.textContent = STATE.courses.length;
     const sel = $('#xk-sel');
     if (sel) sel.textContent = STATE.targets.size;
     if (statusEl) {
-      statusEl.textContent = `共 ${STATE.courses.length} 门课程，目标 ${STATE.targets.size} 门` +
-        (STATE.category ? ` | 类别: ${STATE.category.name}` : '');
+      let info = `共 ${STATE.courses.length} 门课程`;
+      if (qName || qTeacher) info += `，过滤后 ${filtered.length} 门`;
+      info += ` | 目标 ${STATE.targets.size} 门`;
+      if (STATE.category) info += ` | 类别: ${STATE.category.name}`;
+      statusEl.textContent = info;
     }
   }
 
@@ -719,65 +757,74 @@
     updateCourseList();
   }
 
-  // 通过课程关键词（课程编号/名称/教师）添加抢课目标
-  // 学生只知道 GXGL9500 或 "数据艺术"，需要自动调查询接口拿到 jx0404id/kcid
+  // 通过课程编号添加抢课目标
+  // 只接受课程编号（如 GXGL9500），调查询接口匹配到课程名和教师后显示并加入目标
   async function addByCourseKeyword(keywords) {
     if (!STATE.category) STATE.category = API.detectCategory();
     if (!STATE.category.listUrl) {
       log('当前类别不支持查询接口，请先进入具体选课页面（公选课/必修等）', 'error');
       return;
     }
-    log(`查询 ${keywords.length} 个课程关键词: ${keywords.join(', ')}`, 'info');
+    const resultEl = $('#xk-manual-result');
+    if (resultEl) resultEl.innerHTML = '';
+
+    log(`查询 ${keywords.length} 个课程编号: ${keywords.join(', ')}`, 'info');
+    const lines = [];
+
     for (const kw of keywords) {
       const filter = { kcxx: kw, skls: '' };
       const list = await fetchCoursesByQuery(filter);
-      // 精确匹配：课程编号(kch)或课程名(kcmc)或教师(skls)包含关键词
-      const exact = list.filter((c) =>
-        (c.kch && c.kch.toLowerCase() === kw.toLowerCase()) ||
-        (c.kch && c.kch.toLowerCase().indexOf(kw.toLowerCase()) >= 0) ||
-        (c.kcmc && c.kcmc.indexOf(kw) >= 0) ||
-        (c.skls && c.skls.indexOf(kw) >= 0)
+
+      // 只按课程编号(kch)匹配：精确匹配优先，其次包含匹配
+      let matched = list.filter((c) =>
+        c.kch && c.kch.toLowerCase() === kw.toLowerCase()
       );
-      if (exact.length === 0) {
-        // 宽泛匹配：可能关键词被查询接口过滤了，直接用全部结果再筛
-        log(`关键词 "${kw}" 未精确匹配，在全部 ${list.length} 门中宽泛匹配…`, 'warn');
-        const fuzzy = list.filter((c) =>
-          (c.kch && c.kch.toLowerCase().indexOf(kw.toLowerCase()) >= 0) ||
-          (c.kcmc && c.kcmc.indexOf(kw) >= 0) ||
-          (c.skls && c.skls.indexOf(kw) >= 0)
+      if (matched.length === 0) {
+        matched = list.filter((c) =>
+          c.kch && c.kch.toLowerCase().indexOf(kw.toLowerCase()) >= 0
         );
-        if (fuzzy.length === 0) {
-          log(`❌ 关键词 "${kw}" 没找到匹配的课程`, 'error');
-          continue;
+      }
+      // 如果查询接口返回空（关键词被过滤），拉全部再本地匹配
+      if (matched.length === 0 && list.length === 0) {
+        const all = await fetchCoursesByQuery({});
+        matched = all.filter((c) =>
+          c.kch && c.kch.toLowerCase() === kw.toLowerCase()
+        );
+        if (matched.length === 0) {
+          matched = all.filter((c) =>
+            c.kch && c.kch.toLowerCase().indexOf(kw.toLowerCase()) >= 0
+          );
         }
-        exact.push(...fuzzy);
+      }
+
+      if (matched.length === 0) {
+        log(`❌ 课程编号 "${kw}" 没找到匹配的课程`, 'error');
+        lines.push(`<div style="color:#dc3545;">❌ ${kw} — 未找到课程</div>`);
+        continue;
       }
 
       // 去重（同课程号可能有多个课序号）
       const seen = new Set();
       const unique = [];
-      for (const c of exact) {
-        const key = c.jx0404id || c.kch + '_' + c.kexuhao;
+      for (const c of matched) {
+        const key = c.jx0404id || (c.kch + '_' + c.kexuhao);
         if (!seen.has(key)) { seen.add(key); unique.push(c); }
       }
 
-      if (unique.length === 1) {
-        // 唯一匹配，直接加入
-        const c = unique[0];
+      // 显示匹配结果（课程名 + 教师 + 剩余容量）
+      for (const c of unique) {
         const exist = STATE.courses.find((x) => x.id === c.id);
         if (!exist) STATE.courses.push(c);
         STATE.targets.add(c.id);
+        const syrsInfo = c.syrsText ? ` 余${c.syrsText}` : '';
+        lines.push(
+          `<div style="color:#28a745;">✅ ${c.kch}/${c.kexuhao} — ${c.kcmc}（教师: ${c.skls}）${syrsInfo} → 已加入目标</div>`
+        );
         log(`✅ 匹配到: ${c.kcmc}(${c.kch}/${c.kexuhao}) 教师:${c.skls} → 已加入目标`, 'success');
-      } else if (unique.length > 1) {
-        // 多门匹配，全部加入并提示
-        for (const c of unique) {
-          const exist = STATE.courses.find((x) => x.id === c.id);
-          if (!exist) STATE.courses.push(c);
-          STATE.targets.add(c.id);
-          log(`⚠️ "${kw}" 匹配到 ${unique.length} 门，全部加入: ${c.kcmc}(${c.kch}/${c.kexuhao}) ${c.skls}`, 'warn');
-        }
       }
     }
+
+    if (resultEl) resultEl.innerHTML = lines.join('');
     updateCourseList();
   }
 
