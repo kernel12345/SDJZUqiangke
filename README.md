@@ -538,36 +538,40 @@ function http(opts) {
 
 ## 六、安装指南
 
-### 步骤 1：安装 Tampermonkey或者脚本猫
+### 步骤 1：安装脚本管理器（油猴 / 脚本猫 任选其一）
 
-| 浏览器 | 扩展商店链接 |
-|--------|-------------|
-| Chrome / Edge | https://www.tampermonkey.net/ |
-| Firefox | https://addons.mozilla.org/firefox/addon/tampermonkey/ |
+本脚本兼容 **油猴（Tampermonkey）** 和 **脚本猫（ScriptCat）**，二选一安装即可。
 
-安装后工具栏会出现 🐒 图标。
+| 扩展 | Chrome / Edge | Firefox | 官网 |
+|------|--------------|---------|------|
+| 油猴 Tampermonkey | [Chrome 应用商店](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) | [Firefox 附加组件](https://addons.mozilla.org/firefox/addon/tampermonkey/) | https://www.tampermonkey.net/ |
+| 脚本猫 ScriptCat | [Chrome 应用商店](https://chromewebstore.google.com/detail/scriptcat/ndibnaafbcjoppljlgjpgnmijokdcmma) | [Firefox 附加组件](https://addons.mozilla.org/firefox/addon/scriptcat/) | https://docs.scriptcat.org/ |
+
+安装后工具栏会出现 🐒（油猴）或 🐱（脚本猫）图标。
 
 ### 步骤 2：安装脚本
 
 **方式 A：一键安装（推荐）**
 
-在 Tampermonkey 设置 → 实用工具 → URL 导入，粘贴：
+在脚本管理器设置 → 实用工具 → URL 导入，粘贴：
 ```
 https://raw.githubusercontent.com/kernel12345/SDJZUqiangke/main/选课助手.js
 ```
 
 **方式 B：手动粘贴**
 
-1. 点工具栏 🐒 图标 → **添加新脚本…**
+1. 点工具栏 🐒/🐱 图标 → **添加新脚本…**
 2. 打开 [选课助手.js](选课助手.js)，全部复制
 3. 粘贴到编辑器，Ctrl+S 保存
 4. 左侧"已安装脚本"里应该能看到"SDJZU 教务系统选课助手"
+
+> 脚本猫用户注意：脚本猫的 API（`GM_xmlhttpRequest`、`GM_notification` 等）与油猴完全兼容，脚本无需任何修改即可直接运行。
 
 ### 步骤 3：验证生效
 
 1. 打开 `https://xjwgl.sdjzu.edu.cn/jsxsd/` 并登录
 2. 进入选课中心，点"公选课选课"
-3. 页面右上角出现"🚀 山建选课助手 v2.1"面板 = 成功
+3. 页面右上角出现"🚀 山建选课助手 v2.2"面板 = 成功
 
 ---
 

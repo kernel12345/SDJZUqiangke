@@ -2,7 +2,7 @@
 // @name         SDJZU 教务系统选课助手
 // @namespace    https://xjwgl.sdjzu.edu.cn/
 // @version      2.2.0
-// @description  直接对接山东建筑大学教务系统选课接口(已实地抓包)，自动抢课/捡漏，支持公选课/必修/限选/专业选课
+// @description  直接对接山东建筑大学教务系统选课接口(已实地抓包)，自动抢课/捡漏，支持公选课/必修/限选/专业选课。兼容油猴(Tampermonkey)与脚本猫(ScriptCat)
 // @author       You
 // @match        https://xjwgl.sdjzu.edu.cn/jsxsd/*
 // @match        http://xjwgl.sdjzu.edu.cn/jsxsd/*
